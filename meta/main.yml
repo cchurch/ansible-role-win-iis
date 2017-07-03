@@ -1,0 +1,21 @@
+---
+
+galaxy_info:
+  author: Chris Church
+  description: Manage basic IIS configuration on Windows.
+  company: "Nine More Minutes, Inc."
+  license: BSD
+  min_ansible_version: 2.3
+  platforms:
+    - name: Windows
+      versions:
+        # - '2008'
+        # - '2008R2'
+        # - '2012'
+        - '2012R2'
+        # - '2016'
+  galaxy_tags:
+    - 'windows'
+    - 'iis'
+dependencies: []
+allow_duplicates: yes

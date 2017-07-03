@@ -1,0 +1,6 @@
+---
+
+- name: TODO - test iis role
+  hosts: windows
+  roles:
+    - role: cchurch.win-iis

@@ -1,0 +1,15 @@
+---
+
+language: python
+python: '2.7'
+env:
+  matrix:
+    - ANSIBLE_VERSION_SPEC="ansible>=2.2,<2.3"
+    - ANSIBLE_VERSION_SPEC="ansible>=2.3,<2.4"
+
+install:
+  - pip install $ANSIBLE_VERSION_SPEC pywinrm
+  - ansible --version
+
+script:
+  - ansible-playbook -i test/local -v test/main.yml

@@ -1,0 +1,64 @@
+---
+
+- name: ensure iis is installed
+  win_feature:
+    name: 'Web-Server'
+    include_sub_features: yes
+    include_management_tools: yes
+    restart: yes
+
+- name: configure app pool
+  win_iis_webapppool:
+    name: '{{iis_app_pool_name}}'
+    state: started
+    attributes: '{{iis_app_pool_attributes|default(omit,true)}}'
+  when: iis_app_pool_name|default("",true)
+  register: iis_app_pool
+  notify: restart iis
+
+- name: ensure path for site exists
+  win_file:
+    path: '{{iis_site_path|mandatory}}'
+    state: directory
+  when: iis_site_name|default("",true)
+
+- name: allow iis group access to site path
+  win_acl:
+    path: '{{iis_acl_path}}'
+    user: '{{iis_acl_user|default(omit,true)}}'
+    rights: '{{iis_acl_rights|default(omit,true)}}'
+    type: '{{iis_acl_type|default(omit,true)}}'
+    state: '{{iis_acl_state|default(omit,true)}}'
+    inherit: '{{iis_acl_inherit|default(omit,true)}}'
+    propagation: '{{iis_acl_propagation|default(omit,true)}}'
+  when: iis_site_name|default("",true) and iis_acl_path|default("",true)
+
+- name: configure site
+  win_iis_website:
+    name: '{{iis_site_name}}'
+    physical_path: '{{iis_site_path|default(omit,true)}}'
+    site_id: '{{iis_site_id|default(omit,true)}}'
+    ip: '{{iis_site_ip|default(omit,true)}}'
+    port: '{{iis_site_port|default(omit,true)}}'
+    ssl: '{{iis_site_ssl|default(false)}}'
+    hostname: '{{iis_site_hostname|default(omit,true)}}'
+    application_pool: '{{iis_app_pool_name|default(omit,true)}}'
+    parameters: '{{iis_site_parameters|default(omit,true)}}'
+    state: '{{iis_site_state|default("started",true)}}'
+  when: iis_site_name|default("",true)
+  register: iis_site
+  notify: restart iis
+
+- name: configure site bindings
+  win_iis_webbinding:
+    name: '{{iis_site_name}}'
+    host_header: '{{item.host_header|default(iis_binding_host_header,true)|default(omit,true)}}'
+    ip: '{{item.ip|default(iis_binding_ip,true)|default(omit,true)}}'
+    port: '{{item.port|default(iis_binding_port,true)|default(omit,true)}}'
+    protocol: '{{item.protocol|default(iis_binding_protocol,true)|default(omit,true)}}'
+    certificate_store_name: '{{item.certificate_store_name|default(iis_binding_certificate_store_name,true)|default(omit,true)}}'
+    certificate_hash: '{{item.certificate_hash|default(iis_binding_certificate_hash,true)|default(omit,true)}}'
+    state: '{{item.state|default(iis_binding_state,true)|default(omit,true)}}'
+  with_items: '{{iis_bindings|default([])}}'
+  when: iis_site_name|default("",true)
+  notify: restart iis

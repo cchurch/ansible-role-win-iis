@@ -1,0 +1,39 @@
+---
+
+iis_app_pool_name: 'DefaultAppPool'
+iis_app_pool_attributes: ''
+
+iis_site_name: 'Default Web Site'
+iis_site_id: ''
+iis_site_ip: '*'
+iis_site_port: '80'
+iis_site_ssl: false
+iis_site_hostname: ''
+iis_site_path: 'C:\inetpub\wwwroot'
+iis_site_parameters: ''
+iis_site_state: started
+
+iis_binding_host_header: ''
+iis_binding_ip: '*'
+iis_binding_port: '80'
+iis_binding_protocol: 'http'
+iis_binding_state: 'present'
+iis_binding_certificate_store_name: 'My'
+iis_binding_certificate_hash: ''
+
+iis_bindings: []
+  #- host_header: ''
+  #  ip: ''
+  #  port: ''
+  #  protocol: 'http'
+  #  state: 'present'
+  #  certificate_store_name: 'My'
+  #  certificate_hash: ''
+
+iis_acl_path: '{{iis_site_path}}'
+iis_acl_user: 'IIS_IUSRS'
+iis_acl_rights: FullControl
+iis_acl_type: allow
+iis_acl_state: present
+iis_acl_inherit: 'ContainerInherit, ObjectInherit'
+iis_acl_propagation: 'None'
