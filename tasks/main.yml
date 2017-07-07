@@ -33,6 +33,14 @@
     propagation: '{{iis_acl_propagation|default(omit,true)}}'
   when: iis_site_name|default("",true) and iis_acl_path|default("",true)
 
+- name: upload custom web.config from template
+  win_template:
+    src: '{{iis_site_web_config}}'
+    dest: '{{iis_site_path|mandatory}}/web.config'
+    force: '{{iis_site_web_config_force|default(true)}}'
+  when: iis_site_name|default("",true) and iis_site_web_config|default("",true)
+  notify: restart iis
+
 - name: configure site
   win_iis_website:
     name: '{{iis_site_name}}'

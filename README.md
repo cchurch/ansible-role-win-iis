@@ -38,6 +38,11 @@ Use the following variables to configure basic IIS site options:
   is `''`, which will not specify any additional parameters.
 - `iis_site_state`: The state of the site; default is `'started'`. `'absent'`
   may be used to remove a site.
+- `iis_site_web_config`: Local path to a Jinja template that will be used to
+  create a `web.config` file in `iis_site_path`. Default is `""`, which does not
+  create a `web.config` file.
+- `iis_site_web_config_force`: Always write a `web.config` file even if one
+  already exists; default is `true`.
 
 Use the following variables to specify additional hostnames, addresses or ports
 where the site should be served. The `iis_binding_*` variables provide defaults

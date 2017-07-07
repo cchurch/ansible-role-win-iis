@@ -12,6 +12,8 @@ iis_site_hostname: ''
 iis_site_path: 'C:\inetpub\wwwroot'
 iis_site_parameters: ''
 iis_site_state: started
+iis_site_web_config: ''
+iis_site_web_config_force: true
 
 iis_binding_host_header: ''
 iis_binding_ip: '*'
